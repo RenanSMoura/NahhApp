@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NahhApp</string>
+    <string name="teste1">teste1</string>
+    <string name="teste2">teste2</string>
 </resources>
