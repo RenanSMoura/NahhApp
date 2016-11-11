@@ -1,6 +1,7 @@
 package br.com.nahhapp.nahhapp;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,8 +28,8 @@ public class MudaMensagensActivity extends AppCompatActivity {
     String json = "{\n"+
             "  \"mensagens\": {\n"+
             "    \"0\": \"Te amo\",\n"+
-            "    \"1\": \"leao\",\n"+
-            "    \"2\": \"cabeção\"\n"+
+            "    \"1\": \"Leão\",\n"+
+            "    \"2\": \"Cabeção\"\n"+
             "  }\n"+
             "}";
 
@@ -43,22 +44,25 @@ public class MudaMensagensActivity extends AppCompatActivity {
         mainText   = (TextView) findViewById(R.id.main_text);
         codeHash   = (TextView) findViewById(R.id.number_hash);
 
+
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/jambo.otf");
+        mainText.setTypeface(font);
+        codeHash.setTypeface(font);
+
+        insereValoresIniciais();
+
         btnAvancar.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 verifica(v);
             }
         });
-
         btnVoltar.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 verifica(v);
             }
         });
-
         btnRandom.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -67,16 +71,9 @@ public class MudaMensagensActivity extends AppCompatActivity {
             }
         });
 
-        try {
-            jsonObject = new JSONObject(json);
-            mainText.setText(jsonObject.getJSONObject("mensagens").getString(String.valueOf(0)));
-            codeHash.setText("#" + String.valueOf(1));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
 
     }
-
     private void verifica(View view){
         switch (view.getId()){
             case R.id.avancar:
@@ -100,7 +97,6 @@ public class MudaMensagensActivity extends AppCompatActivity {
                 break;
             case R.id.random:
                 alterarTexto(getRandomValue(value));
-
                 break;
         }
         alterarBackGround();
@@ -149,9 +145,15 @@ public class MudaMensagensActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
-
+    }
+    private void insereValoresIniciais(){
+        try {
+            jsonObject = new JSONObject(json);
+            mainText.setText(jsonObject.getJSONObject("mensagens").getString(String.valueOf(0)));
+            codeHash.setText("#" + String.valueOf(0));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }
