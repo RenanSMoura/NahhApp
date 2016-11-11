@@ -17,14 +17,15 @@ import java.util.Random;
 
 public class MudaMensagensActivity extends AppCompatActivity {
 
-    ImageButton btnAvancar;
-    ImageButton btnVoltar;
-    ImageButton btnRandom;
-    TextView    mainText;
-    TextView    codeHash;
-    int         value;
-    RelativeLayout mudaMensagemActivity;
-    JSONObject jsonObject = null;
+    private ImageButton btnAvancar;
+    private ImageButton btnVoltar;
+    private ImageButton btnRandom;
+    private TextView    mainText;
+    private TextView    codeHash;
+    private int         value;
+    private RelativeLayout mudaMensagemActivity;
+    private JSONObject jsonObject = null;
+
     String json = "{\n"+
             "  \"mensagens\": {\n"+
             "    \"0\": \"Te amo\",\n"+
@@ -136,6 +137,7 @@ public class MudaMensagensActivity extends AppCompatActivity {
 
         int randomNumber = new Random().nextInt(6);
         Log.v("Cor", "Numero da cor" + randomNumber);
+
         try {
             JSONObject jsonObject = new JSONObject(jsonCores);
             mudaMensagemActivity.setBackgroundColor(Color.parseColor(
