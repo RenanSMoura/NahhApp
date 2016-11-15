@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">NahhApp</string>
-    <string name="teste1">teste1</string>
-    <string name="teste2">teste2</string>
+    <string name="main_text">Listar todos os motivos dos quais eu te amo seria praticamente impossível.\n Clique e descubra alguns!</string>
 </resources>

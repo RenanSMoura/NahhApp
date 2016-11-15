@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,21 +24,19 @@ public class MudaMensagensActivity extends AppCompatActivity {
     private ImageButton btnRandom;
     private TextView    mainText;
     private TextView    codeHash;
-    private int         value;
+    private int         value = 1;
     private RelativeLayout mudaMensagemActivity;
+    private JsonAsstes jsonAsstes;
     private JSONObject jsonObject = null;
 
-    String json = "{\n"+
-            "  \"mensagens\": {\n"+
-            "    \"0\": \"Te amo\",\n"+
-            "    \"1\": \"Leão\",\n"+
-            "    \"2\": \"Cabeção\"\n"+
-            "  }\n"+
-            "}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        jsonAsstes = new JsonAsstes();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_muda_mensagens);
 
         btnAvancar = (ImageButton) findViewById(R.id.avancar);
@@ -78,9 +78,8 @@ public class MudaMensagensActivity extends AppCompatActivity {
     private void verifica(View view){
         switch (view.getId()){
             case R.id.avancar:
-
-                if(value ==2){
-                    value = 2;
+                if(value ==3){
+                    value = 3;
                 }else{
                     value++;
                     alterarTexto(value);
@@ -88,13 +87,11 @@ public class MudaMensagensActivity extends AppCompatActivity {
 
                 break;
             case R.id.voltar:
+                value--;
                 if(value == 0){
-                    value = 0;
-                }else{
-                    value--;
-                    alterarTexto(value);
+                    value = 1;
                 }
-
+                alterarTexto(value);
                 break;
             case R.id.random:
                 alterarTexto(getRandomValue(value));
@@ -105,6 +102,7 @@ public class MudaMensagensActivity extends AppCompatActivity {
 
     private void alterarTexto(int valor){
         try{
+            jsonObject = new JSONObject(jsonAsstes.getJsonMensagens());
             mainText.setText(jsonObject.getJSONObject("mensagens").getString(String.valueOf(valor)));
             codeHash.setText("#" + String.valueOf(valor));
         }catch (Exception e){
@@ -114,45 +112,37 @@ public class MudaMensagensActivity extends AppCompatActivity {
     }
 
     private int getRandomValue(int valor){
+
         int randomNumber = valor;
-        while (valor == randomNumber){
+
+        while (valor == randomNumber) {
             randomNumber = new Random().nextInt(100);
         }
-        Log.v("Cor", "Numero do texto" + randomNumber);
+
         value = randomNumber;
+
         return randomNumber;
     }
+
     private void alterarBackGround(){
         mudaMensagemActivity = (RelativeLayout) findViewById(R.id.activity_muda_mensagns);
-        String  jsonCores = "{\n" +
-                "  \"cores\": {\n" +
-                "    \"0\": \"#c7b4b4\",\n" +
-                "    \"1\": \"#096790\",\n" +
-                "    \"2\": \"#c72828\",\n" +
-                "    \"3\": \"#ffc125\",\n" +
-                "    \"4\": \"#1ca154\",\n" +
-                "    \"5\": \"#E80C7A\"\n" +
-                "  }\n" +
-                "}";
 
         int randomNumber = new Random().nextInt(6);
-        Log.v("Cor", "Numero da cor" + randomNumber);
 
         try {
-            JSONObject jsonObject = new JSONObject(jsonCores);
+            JSONObject jsonObject = new JSONObject(jsonAsstes.getJsonCores());
             mudaMensagemActivity.setBackgroundColor(Color.parseColor(
-                    jsonObject.getJSONObject("cores").getString(
-                    String.valueOf(randomNumber))));
-
+                    jsonObject.getJSONObject("cores").
+                            getString(String.valueOf(randomNumber))));
         }catch (Exception e){
             e.printStackTrace();
         }
     }
     private void insereValoresIniciais(){
         try {
-            jsonObject = new JSONObject(json);
-            mainText.setText(jsonObject.getJSONObject("mensagens").getString(String.valueOf(0)));
-            codeHash.setText("#" + String.valueOf(0));
+            jsonObject = new JSONObject(jsonAsstes.getJsonMensagens());
+            mainText.setText(jsonObject.getJSONObject("mensagens").getString(String.valueOf(1)));
+            codeHash.setText("#" + String.valueOf(1));
         } catch (JSONException e) {
             e.printStackTrace();
         }
